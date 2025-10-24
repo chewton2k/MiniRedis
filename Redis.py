@@ -22,7 +22,7 @@ class ProtocolHandler(object):
             ':' : self.handle_integer, 
             '$' : self.handle_string, 
             '*' : self.handle_array, 
-            '%' : self.handle_dictionary
+            '%' : self.handle_dict
         }
                 
     def handle_request(self, socket_file):
@@ -193,3 +193,26 @@ class Client(object):
         if isinstance(resp, Error):
             raise CommandError(resp.message)
         return resp
+    
+    def get(self, key):
+        return self.execute('GET', key)
+
+    def set(self, key, value):
+        return self.execute('SET', key, value)
+
+    def delete(self, key):
+        return self.execute('DELETE', key)
+
+    def flush(self):
+        return self.execute('FLUSH')
+
+    def mget(self, *keys):
+        return self.execute('MGET', *keys)
+
+    def mset(self, *items):
+        return self.execute('MSET', *items)
+    
+
+if __name__ == '__main__':
+    from gevent import monkey; monkey.patch_all()
+    Server().run()
