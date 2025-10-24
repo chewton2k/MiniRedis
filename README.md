@@ -1,0 +1,2 @@
+# MiniRedis
+Redis with Python 
